@@ -8,9 +8,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useQuery } from "@tanstack/react-query";
-import { api } from "../lib/api";
+import { api } from "../../lib/api";
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/_authenticated/")({
   component: Index,
 });
 
