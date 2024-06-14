@@ -16,14 +16,19 @@ function CreateExpense() {
   const form = useForm({
     defaultValues: {
       title: "",
-      amount: 0,
+      amount: "",
     },
     onSubmit: async ({ value }) => {
-      const res = await api.expenses.$post({ json: value });
-      if (!res.ok) {
-        throw new Error("Failed to create expense");
+      try {
+        const res = await api.expenses.$post({ json: value });
+        if (!res.ok) {
+          console.error("Response:", res);
+          throw new Error("Failed to create expense");
+        }
+        navigate({ to: "/expenses" });
+      } catch (error) {
+        console.error("Error creating expense:", error);
       }
-      navigate({ to: "/expenses" });
     },
   });
 
@@ -67,7 +72,7 @@ function CreateExpense() {
                 value={field.state.value}
                 onBlur={field.handleBlur}
                 type="number"
-                onChange={(e) => field.handleChange(Number(e.target.value))}
+                onChange={(e) => field.handleChange(e.target.value)}
               />
               {field.state.meta.touchedErrors ? (
                 <em className="text-red-500">
