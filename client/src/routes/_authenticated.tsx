@@ -4,7 +4,7 @@ import { Outlet, createFileRoute } from "@tanstack/react-router";
 
 const Login = () => {
   return (
-    <div>
+    <div className="p-2 max-w-3xl m-auto">
       You have to login!
       <Button className="m-3">
         <a href="/api/login">Login</a>

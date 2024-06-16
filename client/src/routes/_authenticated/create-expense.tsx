@@ -1,6 +1,8 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import { toast } from "sonner";
 
 import { useForm } from "@tanstack/react-form";
 import { Input } from "@/components/ui/input";
@@ -20,17 +22,23 @@ function CreateExpense() {
     defaultValues: {
       title: "",
       amount: "",
+      date: new Date().toISOString(),
     },
     onSubmit: async ({ value }) => {
       try {
         const res = await api.expenses.$post({ json: value });
+        toast("Expense has been created", {
+          description: `Your expense has been created successfully!`,
+        });
         if (!res.ok) {
           console.error("Response:", res);
           throw new Error("Failed to create expense");
         }
         navigate({ to: "/expenses" });
       } catch (error) {
-        console.error("Error creating expense:", error);
+        toast("Something went wrong!", {
+          description: "Failed to create expense. Please try again.",
+        });
       }
     },
   });
@@ -82,6 +90,29 @@ function CreateExpense() {
                 onBlur={field.handleBlur}
                 type="number"
                 onChange={(e) => field.handleChange(e.target.value)}
+              />
+              {field.state.meta.touchedErrors ? (
+                <em className="text-red-500">
+                  {field.state.meta.touchedErrors}
+                </em>
+              ) : null}
+            </div>
+          )}
+        />
+        <form.Field
+          name="date"
+          validators={{
+            onChange: createExpenseSchema.shape.date,
+          }}
+          children={(field) => (
+            <div className="self-center">
+              <Calendar
+                mode="single"
+                selected={new Date(field.state.value)}
+                onSelect={(date) =>
+                  field.handleChange((date ?? new Date()).toISOString())
+                }
+                className="rounded-md border shadow"
               />
               {field.state.meta.touchedErrors ? (
                 <em className="text-red-500">

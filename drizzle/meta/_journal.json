@@ -15,6 +15,13 @@
       "when": 1718384493878,
       "tag": "0001_gigantic_frightful_four",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1718540598717,
+      "tag": "0002_next_ink",
+      "breakpoints": true
     }
   ]
 }

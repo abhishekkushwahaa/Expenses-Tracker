@@ -18,3 +18,11 @@ export const userQueryOptions = queryOptions({
   queryFn: getCurrentUser,
   staleTime: Infinity,
 });
+
+export async function deleteExpense({ id }: { id: number }) {
+  const response = await api.expenses[":id{[0-9]+}"].$delete({
+    param: { id: id.toString() },
+  });
+  if (!response.ok) throw new Error("Failed to delete expense");
+  return response;
+}
